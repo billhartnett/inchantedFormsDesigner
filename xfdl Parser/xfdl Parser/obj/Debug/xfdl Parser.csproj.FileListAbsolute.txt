@@ -1,0 +1,2 @@
+C:\Users\billh\source\repos\xfdl Parser\xfdl Parser\obj\Debug\xfdl Parser.csproj.AssemblyReference.cache
+C:\Users\billh\source\repos\xfdl Parser\xfdl Parser\obj\Debug\xfdl Parser.csproj.CoreCompileInputs.cache
