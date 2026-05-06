@@ -1,0 +1,22 @@
+{
+  "name": "form-designer-functions",
+  "version": "1.0.0",
+  "description": "Azure Functions backend for Form Designer",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "start": "func start",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "@azure-rest/ai-document-intelligence": "^1.0.0",
+    "@azure/search-documents": "^12.0.0",
+    "@azure/storage-blob": "^12.16.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0"
+  }
+}
