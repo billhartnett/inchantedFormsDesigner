@@ -1,0 +1,262 @@
+﻿.form-designer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: #f5f5f5;
+}
+
+.form-designer-header {
+  background: white;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.form-designer-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.form-designer-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.toolbar-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.toolbar-button:hover {
+  background: #f9f9f9;
+  border-color: #999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-button.active {
+  background: #1976d2;
+  color: white;
+  border-color: #0d47a1;
+}
+
+.selection-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background: #e3f2fd;
+  border: 1px solid #1976d2;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #0d47a1;
+}
+
+.selection-info button {
+  padding: 0.25rem 0.75rem;
+  background: #ef5350;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.selection-info button:hover {
+  background: #d32f2f;
+}
+
+.form-designer-canvas {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0e0e0;
+  padding: 1rem;
+  overflow: auto;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-designer-canvas > div {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-designer-properties {
+  background: white;
+  border-top: 1px solid #ddd;
+  padding: 1rem;
+  max-height: 25vh;
+  overflow-y: auto;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.properties-panel {
+  max-width: 500px;
+}
+
+.properties-panel h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.property-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.property-group label {
+  min-width: 100px;
+  font-weight: 500;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.property-group input[type="text"],
+.property-group input[type="color"],
+.property-group select,
+.property-group input[type="range"] {
+  padding: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.property-group input[type="text"],
+.property-group select {
+  flex: 1;
+  min-width: 150px;
+}
+
+.property-group input[type="range"] {
+  width: 150px;
+}
+
+.property-group input[type="color"] {
+  width: 50px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.property-group span {
+  min-width: 50px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.property-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.keyboard-shortcuts {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.keyboard-shortcuts h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.keyboard-shortcuts ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.keyboard-shortcuts li {
+  margin: 0.25rem 0;
+}
+
+.keyboard-shortcuts code {
+  background: #f5f5f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 1024px) {
+  .form-designer {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .form-designer-toolbar {
+    gap: 0.25rem;
+  }
+
+  .toolbar-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .form-designer-properties {
+    max-height: 30vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-designer-header {
+    padding: 0.75rem;
+  }
+
+  .form-designer-header h1 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.25rem;
+  }
+
+  .form-designer-toolbar {
+    gap: 0.25rem;
+  }
+
+  .toolbar-button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    flex: 0 1 calc(50% - 0.125rem);
+  }
+
+  .form-designer-canvas {
+    padding: 0.5rem;
+  }
+
+  .selection-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .property-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .property-group input[type="text"],
+  .property-group select,
+  .property-group input[type="range"] {
+    width: 100%;
+  }
+
+  .form-designer-properties {
+    max-height: 40vh;
+  }
+}
