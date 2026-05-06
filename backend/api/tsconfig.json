@@ -8,10 +8,13 @@
     "strict": false,
     "skipLibCheck": true
   },
-  "include": ["./**/*.ts"],
+  "include": [
+    "./**/*.ts"
+  ],
   "exclude": [
     "../src",
     "../*",
+    "../../*",
     "node_modules",
     "dist"
   ]
