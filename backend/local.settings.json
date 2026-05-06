@@ -6,6 +6,12 @@
     "FUNCTIONS_WORKER_RUNTIME_VERSION": "~4",
     "DOCUMENT_INTELLIGENCE_ENDPOINT": "https://YOUR_RESOURCE_NAME.cognitiveservices.azure.com/",
     "DOCUMENT_INTELLIGENCE_KEY": "YOUR_DOCUMENT_INTELLIGENCE_KEY",
-    "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=YOUR_STORAGE_ACCOUNT;AccountKey=YOUR_STORAGE_KEY;EndpointSuffix=core.windows.net"
+    "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=YOUR_STORAGE_ACCOUNT;AccountKey=YOUR_STORAGE_KEY;EndpointSuffix=core.windows.net",
+    "OPENAI_ENDPOINT": "https://YOUR_RESOURCE_NAME.openai.azure.com/",
+    "OPENAI_KEY": "YOUR_OPENAI_KEY",
+    "OPENAI_DEPLOYMENT_ID": "text-embedding-3-small",
+    "SEARCH_ENDPOINT": "https://YOUR_RESOURCE_NAME.search.windows.net/",
+    "SEARCH_KEY": "YOUR_SEARCH_KEY",
+    "SEARCH_INDEX_NAME": "acord-labels"
   }
 }

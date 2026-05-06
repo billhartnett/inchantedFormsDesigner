@@ -13,6 +13,8 @@
   "dependencies": {
     "@azure/storage-blob": "^3.23.0",
     "@azure/ai-document-intelligence": "^1.0.0",
+    "@azure/openai": "^1.0.0",
+    "@azure/search-documents": "^12.0.0",
     "azure-functions-core-tools": "^4.0.5248"
   },
   "devDependencies": {
