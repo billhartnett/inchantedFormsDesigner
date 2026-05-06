@@ -1,61 +1,75 @@
 ﻿# inchantedFormsDesigner
 
-A comprehensive monorepo for form design and management tools.
+A professional monorepo for form design and management tools built with React, TypeScript, and Konva.js
 
-## 📁 Repository Structure
+## 📁 Monorepo Structure
 
 ```
-inchantedFormsDesigner/
-├── azure-swa-project/                 # React + Azure Static Web Apps frontend
-│   └── frontend/
-│       ├── src/
-│       │   ├── components/
-│       │   │   ├── FormDesigner.tsx    # Main Konva-based form designer component
-│       │   │   └── FormDesigner.css    # FormDesigner styles
-│       │   ├── App.tsx
-│       │   └── main.tsx
-│       └── package.json
-├── docs/                              # Project documentation
-│   ├── FORMDESIGNER-GUIDE.md          # Complete FormDesigner guide
-│   └── README.md                      # This file
-├── Web Forms Designer/                # Legacy form design project
-├── xfdl Parser/                       # XFDL (XDP Forms Document Language) parser
-└── (other directories)
+inchantedFormsDesigner/                (monorepo root)
+│
+├── frontend/                          (React + TypeScript application)
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── FormDesigner.tsx       ⭐ Main Konva form designer
+│   │   │   └── FormDesigner.css
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── vite.config.ts
+│
+├── backend/                           (API and services)
+│   ├── api/                          (Azure Functions / Express API)
+│   └── services/                     (Business logic, utilities)
+│
+├── shared/                           (Shared code across workspaces)
+│   ├── types/                       (TypeScript interfaces, types)
+│   └── utils/                       (Utility functions)
+│
+├── docs/                            (Project documentation)
+│
+├── package.json                     (Root workspace configuration)
+├── .gitignore
+└── README.md
 ```
 
 ## 🎯 Projects
 
-### 1. **FormDesigner** (NEW)
-A professional React + TypeScript form designer component using Konva.js
+### Frontend (`/frontend`)
+React + TypeScript application with the FormDesigner component using Konva.js
 
-**Features:**
-- ✅ Drag & drop form elements (text fields, checkboxes)
-- ✅ Resizable elements with Transformer
+**Key Features:**
+- ✅ Professional form designer component
+- ✅ Drag & drop text fields and checkboxes
 - ✅ Background image support
-- ✅ JSON export/import
+- ✅ JSON save/load
 - ✅ PNG export
-- ✅ Real-time property editing
-- ✅ Keyboard shortcuts (Delete, Escape)
-
-**Location:** `azure-swa-project/frontend/src/components/FormDesigner`
+- ✅ Responsive design
+- ✅ Full TypeScript support
 
 **Quick Start:**
-```tsx
-import FormDesigner from './components/FormDesigner';
-
-<FormDesigner stageWidth={800} stageHeight={600} />
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
-### 2. **Azure SWA Project**
-React + TypeScript frontend for Azure Static Web Apps with authentication and API integration.
+### Backend (`/backend`)
+API and services for form management
 
-**Location:** `azure-swa-project/`
+**Planned Features:**
+- API endpoints for form storage
+- Form validation services
+- User management
+- Database integration
 
-### 3. **Web Forms Designer**
-Legacy form design tool.
+### Shared (`/shared`)
+Shared TypeScript types and utilities used across frontend and backend
 
-### 4. **XFDL Parser**
-Parser for XFDL (XDP Forms Document Language) format.
+**Contents:**
+- Type definitions
+- Utility functions
+- Validation schemas
 
 ## 🚀 Getting Started
 
@@ -71,24 +85,30 @@ Parser for XFDL (XDP Forms Document Language) format.
 git clone https://github.com/billhartnett/inchantedFormsDesigner.git
 cd inchantedFormsDesigner
 
-# Install frontend dependencies
-cd azure-swa-project/frontend
+# Install monorepo dependencies
 npm install
 
-# Install required packages for FormDesigner
+# Install workspace-specific dependencies
+npm install -w frontend
 npm install react konva react-konva
 ```
 
-### Running the Frontend
+### Development
 
 ```bash
-cd azure-swa-project/frontend
-npm run dev
+# Start frontend development server
+npm run dev -w frontend
+
+# Build all workspaces
+npm run build
+
+# Run tests
+npm run test
 ```
 
-The application will be available at `http://localhost:5173`
-
 ## 📦 FormDesigner Component
+
+The main component is located in `frontend/src/components/FormDesigner.tsx`
 
 ### Usage
 
@@ -98,13 +118,12 @@ import FormDesigner from './components/FormDesigner';
 function App() {
   const handleSave = (data) => {
     console.log('Form saved:', data);
-    // Save to backend or local storage
   };
 
   return (
     <FormDesigner 
-      stageWidth={900}
-      stageHeight={700}
+      stageWidth={800}
+      stageHeight={600}
       onSave={handleSave}
     />
   );
@@ -113,79 +132,50 @@ function App() {
 
 ### Features
 
-#### Canvas
-- 50x50px grid background
-- Optional background image (50% opacity)
-- Configurable stage size
+- **Drag & Drop**: Add and arrange text fields and checkboxes
+- **Resizable**: 8-point resize handles via Transformer
+- **Properties Panel**: Edit element properties in real-time
+- **Background Image**: Load and manage background images
+- **JSON Persistence**: Save and load form layouts
+- **PNG Export**: Export forms as high-quality PNG images
+- **Keyboard Shortcuts**: Delete (remove), Escape (deselect)
 
-#### Text Fields
-- Drag to move
-- Resize with 8-point handles
-- Customize: font, size, color, family, placeholder, name
-
-#### Checkboxes
-- Drag to move
-- Toggle checked state
-- Customize: label, size, name
-
-#### Data Management
-- Export as JSON (includes base64 background image)
-- Import from JSON
-- Export as PNG (2x quality)
-
-#### Keyboard Support
-- `Delete` - Remove selected element
-- `Escape` - Deselect element
-- Drag to move
-- Drag corners to resize
-
-### Type Definitions
+## 🎨 Component Props
 
 ```typescript
-interface TextFieldConfig {
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  text: string;
-  fontSize: number;
-  fontFamily: string;
-  fill: string;
-  placeholder?: string;
-  name?: string;
-}
-
-interface CheckboxConfig {
-  id: string;
-  x: number;
-  y: number;
-  size: number;
-  checked: boolean;
-  label: string;
-  name?: string;
-}
-
-interface FormDesignerData {
-  version: string;
-  backgroundImage?: string;
-  textFields: TextFieldConfig[];
-  checkboxes: CheckboxConfig[];
-  stageWidth: number;
-  stageHeight: number;
+interface FormDesignerProps {
+  stageWidth?: number;                    // Default: 800
+  stageHeight?: number;                   // Default: 600
+  onSave?: (data: FormDesignerData) => void;
 }
 ```
 
+## 📊 Statistics
+
+- **Frontend**: React 18 + TypeScript
+- **Component Code**: 920 lines
+- **Component Styles**: 350+ lines
+- **Type Safe**: 100% (no `any` types)
+- **Browser Support**: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+
+## 🔗 Links
+
+- **GitHub**: https://github.com/billhartnett/inchantedFormsDesigner
+- **Frontend**: `./frontend`
+- **Backend**: `./backend`
+- **Shared**: `./shared`
+
 ## 📚 Documentation
 
-- **[FormDesigner Complete Guide](./docs/FORMDESIGNER-GUIDE.md)** - Detailed technical documentation
-- **[Quick Start Guide](./docs/FORMDESIGNER-QUICK-START.md)** - Setup and usage guide
-- **[API Reference](./docs/FORMDESIGNER-GUIDE.md#api-reference)** - Complete API documentation
+- Frontend docs: `frontend/README.md`
+- Backend docs: `backend/README.md`
+- Project docs: `docs/`
 
-## 🎨 Customization
+## 🛠️ Customization
 
-### Change Primary Color
-Edit `FormDesigner.css` and replace `#1976d2`:
+### Change FormDesigner Colors
+
+Edit `frontend/src/components/FormDesigner.css`:
 ```css
 .toolbar-button.active {
   background: #YOUR_COLOR;
@@ -193,63 +183,44 @@ Edit `FormDesigner.css` and replace `#1976d2`:
 ```
 
 ### Adjust Canvas Size
-```tsx
+
+```typescript
 <FormDesigner stageWidth={1200} stageHeight={900} />
 ```
 
-### Improve PNG Export Quality
-In `FormDesigner.tsx`, modify the `exportAsPNG` method:
-```typescript
-const dataURL = stageRef.current.toDataURL({ pixelRatio: 3 }); // Higher quality
+## 📝 Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development
+npm run dev -w frontend
+
+# Build production
+npm run build
+
+# Run tests
+npm run test
 ```
 
-## 🌐 Browser Support
+## 🤝 Contributing
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+This is a monorepo with multiple workspaces. When contributing:
 
-## 📝 File Structure
-
-```
-azure-swa-project/frontend/
-├── src/
-│   ├── components/
-│   │   ├── FormDesigner.tsx       (920 lines)
-│   │   └── FormDesigner.css       (350+ lines)
-│   ├── assets/
-│   ├── App.tsx
-│   ├── index.css
-│   └── main.tsx
-├── public/
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── README.md
-```
-
-## 🔒 Security
-
-- ✅ No eval or dynamic code execution
-- ✅ Safe JSON parsing with error handling
-- ✅ CORS-aware image loading
-- ✅ Client-side processing only
-- ✅ Base64 image encoding
+1. Make changes in the appropriate workspace
+2. Commit with descriptive messages
+3. Test changes across workspaces as needed
 
 ## 📄 License
 
-Part of the inchantedFormsDesigner project.
+MIT
 
 ## 👤 Author
 
 Bill Hartnett
 
-## 🔗 Repository
-
-[https://github.com/billhartnett/inchantedFormsDesigner](https://github.com/billhartnett/inchantedFormsDesigner)
-
 ---
 
-**Last Updated:** January 2024  
-**Status:** Active Development
+**Status**: ✅ Active Development  
+**Last Updated**: January 2024

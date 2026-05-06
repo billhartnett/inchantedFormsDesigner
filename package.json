@@ -1,0 +1,25 @@
+﻿{
+  "name": "inchanted-forms-designer",
+  "version": "1.0.0",
+  "description": "Professional monorepo for form design and management",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w frontend",
+    "build": "npm run build -w frontend && npm run build -w backend",
+    "test": "npm run test -w frontend && npm run test -w backend",
+    "lint": "npm run lint -w frontend && npm run lint -w backend"
+  },
+  "keywords": [
+    "form-designer",
+    "konva",
+    "react",
+    "typescript"
+  ],
+  "author": "Bill Hartnett",
+  "license": "MIT"
+}
