@@ -1,0 +1,34 @@
+{
+  "name": "inchantedforms-functions",
+  "version": "1.0.0",
+  "description": "Self-contained Azure Functions backend for inchantedFormsDesigner",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "func start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "echo \"No linter configured\""
+  },
+  "keywords": [
+    "azure-functions",
+    "typescript",
+    "form-designer"
+  ],
+  "author": "billhartnett",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/functions": "^4.0.0"
+  },
+  "optionalDependencies": {
+    "@azure/ai-document-intelligence": "npm:null@^1.0.1",
+    "@azure/core-auth": "^1.10.1",
+    "@azure/openai": "npm:null@^1.0.1",
+    "@azure/search-documents": "^12.2.0",
+    "@azure/storage-blob": "^12.31.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
