@@ -10,6 +10,7 @@ node_modules/
 backend/src/**/*.js
 backend/api/dist/
 .vs/
+azure-swa-project/
 
 # Environment variables
 .env
