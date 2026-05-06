@@ -1,5 +1,5 @@
-﻿import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { EmbeddingsService } from "../../src/acord/embeddingsService";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { EmbeddingsService } from "../shared/acord/embeddingsService";
 
 /**
  * Initialize Search Index - One-time setup function
@@ -7,11 +7,10 @@ import { EmbeddingsService } from "../../src/acord/embeddingsService";
  * 
  * Usage: POST /api/acord/init-index
  */
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+async function httpTrigger(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   context.log("Initialize ACORD labels index - HTTP trigger");
 
   try {
-    // Validate credentials
     const openaiEndpoint = process.env.OPENAI_ENDPOINT;
     const openaiKey = process.env.OPENAI_KEY;
     const openaiDeploymentId = process.env.OPENAI_DEPLOYMENT_ID;
@@ -29,14 +28,13 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     const missingVars = requiredEnvVars.filter(v => !process.env[v]);
 
     if (missingVars.length > 0) {
-      context.res = {
+      return {
         status: 500,
-        body: {
+        body: JSON.stringify({
           success: false,
           error: `Missing required environment variables: ${missingVars.join(", ")}`,
-        },
+        }),
       };
-      return;
     }
 
     context.log("Initializing ACORD labels search index...");
@@ -52,25 +50,25 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
 
     await embeddingsService.initializeIndex();
 
-    context.res = {
+    return {
       status: 200,
-      body: {
+      body: JSON.stringify({
         success: true,
         message: "ACORD labels index initialized successfully",
         indexName: searchIndexName,
-      },
+      }),
     };
   } catch (error) {
-    context.log.error(`Error initializing index: ${error}`);
+    context.log(`Error initializing index: ${error}`);
 
-    context.res = {
+    return {
       status: 500,
-      body: {
+      body: JSON.stringify({
         success: false,
         error: error instanceof Error ? error.message : String(error),
-      },
+      }),
     };
   }
-};
+}
 
 export default httpTrigger;

@@ -7,6 +7,9 @@ node_modules/
 /dist
 /build
 /out
+backend/src/**/*.js
+backend/api/dist/
+.vs/
 
 # Environment variables
 .env
@@ -41,3 +44,4 @@ temp/
 
 # Azure
 .azure/
+

@@ -1,13 +1,12 @@
-﻿import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { LabelSuggestionService } from "../../src/acord/labelSuggestionService";
-import { EmbeddingsService } from "../../src/acord/embeddingsService";
-import { AcordSuggestionRequest } from "../../src/acord/acordModels";
+import { HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { LabelSuggestionService } from "../shared/acord/labelSuggestionService";
+import { EmbeddingsService } from "../shared/acord/embeddingsService";
+import { AcordSuggestionRequest } from "../shared/acord/acordModels";
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+async function httpTrigger(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   context.log("Suggest ACORD labels HTTP trigger function received request");
 
   try {
-    // Validate environment variables
     const openaiEndpoint = process.env.OPENAI_ENDPOINT;
     const openaiKey = process.env.OPENAI_KEY;
     const openaiDeploymentId = process.env.OPENAI_DEPLOYMENT_ID;
@@ -25,47 +24,41 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     const missingVars = requiredEnvVars.filter(v => !process.env[v]);
 
     if (missingVars.length > 0) {
-      context.res = {
+      return {
         status: 500,
-        body: {
+        body: JSON.stringify({
           success: false,
           error: `Missing required environment variables: ${missingVars.join(", ")}`,
-        },
+        }),
       };
-      return;
     }
 
-    // Parse request
-    const request: AcordSuggestionRequest = req.body;
+    const requestBody: AcordSuggestionRequest = (await request.json()) as AcordSuggestionRequest;
 
-    if (!request.fields || !Array.isArray(request.fields) || request.fields.length === 0) {
-      context.res = {
+    if (!requestBody.fields || !Array.isArray(requestBody.fields) || requestBody.fields.length === 0) {
+      return {
         status: 400,
-        body: {
+        body: JSON.stringify({
           success: false,
           error: "Request must include 'fields' array with at least one field",
-        },
+        }),
       };
-      return;
     }
 
-    // Validate field structure
-    for (const field of request.fields) {
+    for (const field of requestBody.fields) {
       if (!field.fieldName || !field.content) {
-        context.res = {
+        return {
           status: 400,
-          body: {
+          body: JSON.stringify({
             success: false,
             error: "Each field must have 'fieldName' and 'content' properties",
-          },
+          }),
         };
-        return;
       }
     }
 
-    context.log(`Processing ${request.fields.length} fields for label suggestions`);
+    context.log(`Processing ${requestBody.fields.length} fields for label suggestions`);
 
-    // Initialize services
     const embeddingsService = new EmbeddingsService(
       openaiEndpoint!,
       openaiKey!,
@@ -76,27 +69,25 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     );
 
     const labelService = new LabelSuggestionService(embeddingsService);
-
-    // Get suggestions
-    const response = await labelService.suggestLabels(request);
+    const response = await labelService.suggestLabels(requestBody);
 
     context.log(`Successfully generated suggestions for ${response.suggestions.length} fields`);
 
-    context.res = {
+    return {
       status: response.success ? 200 : 500,
-      body: response,
+      body: JSON.stringify(response),
     };
   } catch (error) {
-    context.log.error(`Error processing request: ${error}`);
+    context.log(`Error processing request: ${error}`);
 
-    context.res = {
+    return {
       status: 500,
-      body: {
+      body: JSON.stringify({
         success: false,
         error: error instanceof Error ? error.message : String(error),
-      },
+      }),
     };
   }
-};
+}
 
 export default httpTrigger;
