@@ -5,22 +5,21 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
 
-    /* Disable strict mode so your build stops failing */
     "strict": false,
     "noImplicitAny": false,
 
-    /* Vite-friendly settings */
     "allowJs": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "noEmit": true,
 
-    /* No output from tsc (Vite handles bundling) */
-    "noEmit": true
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["../shared/src/*"]
+    }
   },
-
-  /* Include your actual source code */
   "include": ["src"]
 }
 
