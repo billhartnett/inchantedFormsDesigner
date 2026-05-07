@@ -31,7 +31,7 @@ jobs:
           app_location: "frontend" # App source code path
           api_location: "backend/api" # Api source code path
           output_location: "frontend/dist" # Built app content directory
-          skip_app_build: false
+          skip_app_build: true
 
           ###### End of Repository/Build Configurations ######
 
