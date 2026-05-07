@@ -29,6 +29,10 @@ jobs:
         working-directory: shared
         run: npm install
 
+      - name: Clean shared dist
+        working-directory: shared
+        run: rm -rf dist
+
       - name: Build shared
         working-directory: shared
         run: npm run build
@@ -73,5 +77,8 @@ jobs:
 
           # Monorepo paths
           app_location: "frontend"
+          api_location: "backend/api"
+          output_location: "frontend/dist"
+
           api_location: "backend/api"
           output_location: "frontend/dist"
