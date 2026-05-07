@@ -11,5 +11,5 @@
     "ignoreDeprecations": "6.0"
   },
   "include": ["./**/*.ts"],
-  "exclude": ["../shared"]
+  "exclude": ["../shared", "../../shared", "**/shared/**"]
 }
