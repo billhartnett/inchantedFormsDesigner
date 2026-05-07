@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "npm run dev -w frontend",
-    "build": "npm run build -w frontend && npm run build -w backend",
+    "build": "npm --prefix frontend run build && npm --prefix backend/api run build",
     "test": "npm run test -w frontend && npm run test -w backend",
     "lint": "npm run lint -w frontend && npm run lint -w backend"
   },
