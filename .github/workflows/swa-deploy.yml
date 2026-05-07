@@ -77,4 +77,3 @@ jobs:
           app_location: "frontend"
           api_location: "backend/api"
           output_location: "frontend/dist"
-
