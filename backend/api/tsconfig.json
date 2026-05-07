@@ -10,6 +10,13 @@
     "types": ["node"],
     "ignoreDeprecations": "6.0"
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["../shared", "../../shared", "**/shared/**"]
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "../shared",
+    "../../shared",
+    "**/shared/**",
+    "../**/shared/**"
+  ]
 }
