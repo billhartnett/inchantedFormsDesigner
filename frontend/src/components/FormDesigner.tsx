@@ -256,97 +256,77 @@ const FormDesigner: React.FC<FormDesignerProps> = ({ stageWidth = 800, stageHeig
         </Stage>
       </div>
            <div className="form-designer-properties">
-        {selectedType === "textfield" && selectedId ? (
-          (() => {
-            const field = textFields.find((f) => f.id === selectedId);
-            if (!field) {
-              return (
-                <div className="properties-panel">
-                  <h3>Properties</h3>
-                  <p>Select an element to edit</p>
-                </div>
-              );
-            }
-
-            return (
-              <div className="properties-panel">
-                <h3>Text Field Properties</h3>
-
-                <div className="property-group">
-                  <label>Name:</label>
-                  <input
-                    type="text"
-                    value={field.name || ""}
-                    onChange={(e) =>
-                      updateTextField(selectedId, { name: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="property-group">
-                  <label>Text:</label>
-                  <input
-                    type="text"
-                    value={field.text}
-                    onChange={(e) =>
-                      updateTextField(selectedId, { text: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="property-group">
-                  <label>Font Size:</label>
-                  <input
-                    type="range"
-                    min="8"
-                    max="72"
-                    value={field.fontSize}
-                    onChange={(e) =>
-                      updateTextField(selectedId, {
-                        fontSize: Number(e.target.value),
-                      })
-                    }
-                  />
-                  <span>{field.fontSize}px</span>
-                </div>
-
-                <div className="property-group">
-                  <label>Color:</label>
-                  <input
-                    type="color"
-                    value={field.fill}
-                    onChange={(e) =>
-                      updateTextField(selectedId, { fill: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-            );
-          })()
-        ) : (
+  {selectedType === "textfield" && selectedId ? (
+    (() => {
+      const field = textFields.find((f) => f.id === selectedId);
+      if (!field) {
+        return (
           <div className="properties-panel">
             <h3>Properties</h3>
             <p>Select an element to edit</p>
           </div>
-        )}
-      </div>
+        );
+      }
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={handleBackgroundImageUpload}
-      />
-      <input
-        ref={jsonInputRef}
-        type="file"
-        accept=".json"
-        style={{ display: "none" }}
-        onChange={loadFormFromJSON}
-      />
+      return (
+        <div className="properties-panel">
+          <h3>Text Field Properties</h3>
+
+          <div className="property-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              value={field.name || ""}
+              onChange={(e) =>
+                updateTextField(selectedId, { name: e.target.value })
+              }
+            />
+          </div>
+
+          <div className="property-group">
+            <label>Text:</label>
+            <input
+              type="text"
+              value={field.text}
+              onChange={(e) =>
+                updateTextField(selectedId, { text: e.target.value })
+              }
+            />
+          </div>
+
+          <div className="property-group">
+            <label>Font Size:</label>
+            <input
+              type="range"
+              min="8"
+              max="72"
+              value={field.fontSize}
+              onChange={(e) =>
+                updateTextField(selectedId, {
+                  fontSize: Number(e.target.value),
+                })
+              }
+            />
+            <span>{field.fontSize}px</span>
+          </div>
+
+          <div className="property-group">
+            <label>Color:</label>
+            <input
+              type="color"
+              value={field.fill}
+              onChange={(e) =>
+                updateTextField(selectedId, { fill: e.target.value })
+              }
+            />
+          </div>
+        </div>
+      );
+    })()
+  ) : (
+    <div className="properties-panel">
+      <h3>Properties</h3>
+      <p>Select an element to edit</p>
     </div>
-  );
-};
-
-export default FormDesigner;
+  )}
+</div>
