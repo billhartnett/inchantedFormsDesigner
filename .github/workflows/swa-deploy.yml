@@ -65,12 +65,13 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
 
-          # Force the action to skip its internal Docker build
+          # Disable Docker/Oryx build completely
           skip_app_build: true
           app_build_command: ""
 
           workingDirectory: "."
 
+          # Monorepo paths
           app_location: "frontend"
           api_location: "backend/api"
           output_location: "frontend/dist"
