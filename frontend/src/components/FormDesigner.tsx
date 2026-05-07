@@ -233,6 +233,73 @@ const FormDesigner: React.FC<FormDesignerProps> = ({ stageWidth = 800, stageHeig
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedId, selectedType]);
 
+  // ⭐ CLEAN PROPERTIES PANEL COMPONENT
+  const TextFieldProperties = ({ field, updateTextField, selectedId }) => {
+    if (!field) {
+      return (
+        <div className="properties-panel">
+          <h3>Properties</h3>
+          <p>Select an element to edit</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="properties-panel">
+        <h3>Text Field Properties</h3>
+
+        <div className="property-group">
+          <label>Name:</label>
+          <input
+            type="text"
+            value={field.name || ""}
+            onChange={(e) =>
+              updateTextField(selectedId, { name: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="property-group">
+          <label>Text:</label>
+          <input
+            type="text"
+            value={field.text}
+            onChange={(e) =>
+              updateTextField(selectedId, { text: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="property-group">
+          <label>Font Size:</label>
+          <input
+            type="range"
+            min="8"
+            max="72"
+            value={field.fontSize}
+            onChange={(e) =>
+              updateTextField(selectedId, {
+                fontSize: Number(e.target.value),
+              })
+            }
+          />
+          <span>{field.fontSize}px</span>
+        </div>
+
+        <div className="property-group">
+          <label>Color:</label>
+          <input
+            type="color"
+            value={field.fill}
+            onChange={(e) =>
+              updateTextField(selectedId, { fill: e.target.value })
+            }
+          />
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="form-designer">
       <div className="form-designer-header">
@@ -247,86 +314,177 @@ const FormDesigner: React.FC<FormDesignerProps> = ({ stageWidth = 800, stageHeig
           <button className="toolbar-button" onClick={() => jsonInputRef.current?.click()}>📂 Load JSON</button>
           <button className="toolbar-button" onClick={exportAsPNG}>📷 PNG</button>
         </div>
-        {selectedId && selectedType && <div className="selection-info"><span>{selectedType === 'textfield' ? '📝 Text Field' : '☑ Checkbox'}</span><button onClick={() => { if (selectedType === 'textfield') deleteTextField(selectedId); else deleteCheckbox(selectedId); }}>🗑 Delete</button></div>}
+        {selectedId && selectedType && (
+          <div className="selection-info">
+            <span>{selectedType === 'textfield' ? '📝 Text Field' : '☑ Checkbox'}</span>
+            <button onClick={() => {
+              if (selectedType === 'textfield') deleteTextField(selectedId);
+              else deleteCheckbox(selectedId);
+            }}>🗑 Delete</button>
+          </div>
+        )}
       </div>
+
       <div className="form-designer-canvas">
-        <Stage ref={stageRef} width={stageWidth} height={stageHeight} onClick={handleStageClick} style={{ border: '2px solid #ccc', backgroundColor: '#fff' }}>
-          <Layer ref={backgroundLayerRef} listening={false}><Rect width={stageWidth} height={stageHeight} fill="#ffffff" />{Array.from({ length: Math.ceil(stageHeight / 50) }).map((_, rowIdx) => Array.from({ length: Math.ceil(stageWidth / 50) }).map((_, colIdx) => <Rect key={`grid-${rowIdx}-${colIdx}`} x={colIdx * 50} y={rowIdx * 50} width={50} height={50} stroke="#e0e0e0" strokeWidth={0.5} />))}{backgroundImage && <KonvaImage ref={imageRef} image={backgroundImage} width={stageWidth} height={stageHeight} opacity={0.5} />}</Layer>
-          <Layer ref={uiLayerRef}>{textFields.map(field => <Group key={field.id} id={field.id} x={field.x} y={field.y} draggable onClick={() => { setSelectedId(field.id); setSelectedType('textfield'); }} onDragEnd={e => { updateTextField(field.id, { x: Math.max(0, Math.min(e.target.x(), stageWidth - field.width)), y: Math.max(0, Math.min(e.target.y(), stageHeight - field.height)) }); }}><Rect width={field.width} height={field.height} fill="#f5f5f5" stroke={selectedId === field.id ? '#1976d2' : '#d0d0d0'} strokeWidth={selectedId === field.id ? 2 : 1} cornerRadius={4} /><Text text={field.text} width={field.width - 8} height={field.height} fontSize={field.fontSize} fontFamily={field.fontFamily} fill={field.fill} padding={4} verticalAlign="middle" /></Group>))}{checkboxes.map(checkbox => <Group key={checkbox.id} id={checkbox.id} x={checkbox.x} y={checkbox.y} draggable onClick={() => { setSelectedId(checkbox.id); setSelectedType('checkbox'); }} onDragEnd={e => { updateCheckbox(checkbox.id, { x: Math.max(0, Math.min(e.target.x(), stageWidth - checkbox.size)), y: Math.max(0, Math.min(e.target.y(), stageHeight - checkbox.size)) }); }}><Rect width={checkbox.size} height={checkbox.size} fill="#ffffff" stroke={selectedId === checkbox.id ? '#1976d2' : '#cccccc'} strokeWidth={selectedId === checkbox.id ? 2 : 1} />{checkbox.checked && <Text text="✓" width={checkbox.size} height={checkbox.size} fontSize={checkbox.size * 0.7} fill="#1976d2" align="center" verticalAlign="middle" />}<Text text={checkbox.label} x={checkbox.size + 8} y={checkbox.size / 2 - 8} fontSize={12} fontFamily="Arial" fill="#000000" /></Group>))}<Transformer ref={transformerRef} /></Layer>
+        <Stage
+          ref={stageRef}
+          width={stageWidth}
+          height={stageHeight}
+          onClick={handleStageClick}
+          style={{ border: '2px solid #ccc', backgroundColor: '#fff' }}
+        >
+          <Layer ref={backgroundLayerRef} listening={false}>
+            <Rect width={stageWidth} height={stageHeight} fill="#ffffff" />
+            {Array.from({ length: Math.ceil(stageHeight / 50) }).map((_, rowIdx) =>
+              Array.from({ length: Math.ceil(stageWidth / 50) }).map((_, colIdx) => (
+                <Rect
+                  key={`grid-${rowIdx}-${colIdx}`}
+                  x={colIdx * 50}
+                  y={rowIdx * 50}
+                  width={50}
+                  height={50}
+                  stroke="#e0e0e0"
+                  strokeWidth={0.5}
+                />
+              ))
+            )}
+            {backgroundImage && (
+              <KonvaImage
+                ref={imageRef}
+                image={backgroundImage}
+                width={stageWidth}
+                height={stageHeight}
+                opacity={0.5}
+              />
+            )}
+          </Layer>
+
+          <Layer ref={uiLayerRef}>
+            {textFields.map(field => (
+              <Group
+                key={field.id}
+                id={field.id}
+                x={field.x}
+                y={field.y}
+                draggable
+                onClick={() => {
+                  setSelectedId(field.id);
+                  setSelectedType('textfield');
+                }}
+                onDragEnd={e => {
+                  updateTextField(field.id, {
+                    x: Math.max(0, Math.min(e.target.x(), stageWidth - field.width)),
+                    y: Math.max(0, Math.min(e.target.y(), stageHeight - field.height)),
+                  });
+                }}
+              >
+                <Rect
+                  width={field.width}
+                  height={field.height}
+                  fill="#f5f5f5"
+                  stroke={selectedId === field.id ? '#1976d2' : '#d0d0d0'}
+                  strokeWidth={selectedId === field.id ? 2 : 1}
+                  cornerRadius={4}
+                />
+                <Text
+                  text={field.text}
+                  width={field.width - 8}
+                  height={field.height}
+                  fontSize={field.fontSize}
+                  fontFamily={field.fontFamily}
+                  fill={field.fill}
+                  padding={4}
+                  verticalAlign="middle"
+                />
+              </Group>
+            ))}
+
+            {checkboxes.map(checkbox => (
+              <Group
+                key={checkbox.id}
+                id={checkbox.id}
+                x={checkbox.x}
+                y={checkbox.y}
+                draggable
+                onClick={() => {
+                  setSelectedId(checkbox.id);
+                  setSelectedType('checkbox');
+                }}
+                onDragEnd={e => {
+                  updateCheckbox(checkbox.id, {
+                    x: Math.max(0, Math.min(e.target.x(), stageWidth - checkbox.size)),
+                    y: Math.max(0, Math.min(e.target.y(), stageHeight - checkbox.size)),
+                  });
+                }}
+              >
+                <Rect
+                  width={checkbox.size}
+                  height={checkbox.size}
+                  fill="#ffffff"
+                  stroke={selectedId === checkbox.id ? '#1976d2' : '#cccccc'}
+                  strokeWidth={selectedId === checkbox.id ? 2 : 1}
+                />
+                {checkbox.checked && (
+                  <Text
+                    text="✓"
+                    width={checkbox.size}
+                    height={checkbox.size}
+                    fontSize={checkbox.size * 0.7}
+                    fill="#1976d2"
+                    align="center"
+                    verticalAlign="middle"
+                  />
+                )}
+                <Text
+                  text={checkbox.label}
+                  x={checkbox.size + 8}
+                  y={checkbox.size / 2 - 8}
+                  fontSize={12}
+                  fontFamily="Arial"
+                  fill="#000000"
+                />
+              </Group>
+            ))}
+
+            <Transformer ref={transformerRef} />
+          </Layer>
         </Stage>
       </div>
-           <div className="form-designer-properties">
-  {selectedType === "textfield" && selectedId ? (
-    (() => {
-      const field = textFields.find((f) => f.id === selectedId);
-      if (!field) {
-        return (
+
+      {/* Properties Panel */}
+      <div className="form-designer-properties">
+        {selectedType === "textfield" && selectedId ? (
+          <TextFieldProperties
+            field={textFields.find((f) => f.id === selectedId)}
+            updateTextField={updateTextField}
+            selectedId={selectedId}
+          />
+        ) : (
           <div className="properties-panel">
             <h3>Properties</h3>
             <p>Select an element to edit</p>
           </div>
-        );
-      }
+        )}
+      </div>
 
-      return (
-        <div className="properties-panel">
-          <h3>Text Field Properties</h3>
+      {/* Hidden Inputs */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleBackgroundImageUpload}
+      />
 
-          <div className="property-group">
-            <label>Name:</label>
-            <input
-              type="text"
-              value={field.name || ""}
-              onChange={(e) =>
-                updateTextField(selectedId, { name: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="property-group">
-            <label>Text:</label>
-            <input
-              type="text"
-              value={field.text}
-              onChange={(e) =>
-                updateTextField(selectedId, { text: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="property-group">
-            <label>Font Size:</label>
-            <input
-              type="range"
-              min="8"
-              max="72"
-              value={field.fontSize}
-              onChange={(e) =>
-                updateTextField(selectedId, {
-                  fontSize: Number(e.target.value),
-                })
-              }
-            />
-            <span>{field.fontSize}px</span>
-          </div>
-
-          <div className="property-group">
-            <label>Color:</label>
-            <input
-              type="color"
-              value={field.fill}
-              onChange={(e) =>
-                updateTextField(selectedId, { fill: e.target.value })
-              }
-            />
-          </div>
-        </div>
-      );
-    })()
-  ) : (
-    <div className="properties-panel">
-      <h3>Properties</h3>
-      <p>Select an element to edit</p>
+      <input
+        ref={jsonInputRef}
+        type="file"
+        accept=".json"
+        style={{ display: "none" }}
+        onChange={loadFormFromJSON}
+      />
     </div>
-  )}
-</div>
+  );
+};
+
+export default FormDesigner;
